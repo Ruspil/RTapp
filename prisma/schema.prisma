@@ -1,0 +1,60 @@
+// Local dev: sqlite file. Production: set DATABASE_URL to PostgreSQL.
+// prisma migrate deploy works for both after initial migration.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(cuid())
+  email        String        @unique
+  passwordHash String
+  name         String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  profile      UserProfile?
+  workoutLogs  WorkoutLog[]
+  feedback     SessionFeedback[]
+}
+
+model UserProfile {
+  id             String            @id @default(cuid())
+  userId         String            @unique
+  user           User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  position       String? // GK | CB | FB | WB | DM | CM | AM | W | ST
+  dominantFoot   String? // "left" | "right"
+  weeklyMinutes  Int?
+  injuryFlags    String? // JSON string: areas to avoid
+  difficultyBias Float             @default(0) // -1 easier .. +1 harder, from feedback loop
+}
+
+model WorkoutLog {
+  id               String   @id @default(cuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  programWeek      Int
+  day              Int
+  sessionId        String
+  durationSeconds  Int
+  percentComplete  Float
+  completedAt      DateTime @default(now())
+  notes            String?
+
+  @@index([userId, completedAt])
+}
+
+model SessionFeedback {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rating    Int // 1-5 perceived difficulty / quality
+  body      String? // short text
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+}

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <title>Mon Entraînement Pro Gym & Cardio</title>    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script>
+      // Apply dark theme immediately to prevent flash of white
+      document.documentElement.classList.add('dark');
+    </script>
+  </head>
+
+  <body>
+    <!-- Splash Screen -->
+    <div id="splash" style="
+      position: fixed;
+      inset: 0;
+      background: #09090b;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    ">
+      <!-- Logo RT -->
+      <div id="splash-logo" style="
+        width: 96px;
+        height: 96px;
+        background: white;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 48px;
+        opacity: 0;
+        transform: scale(0.7);
+        transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        box-shadow: 0 0 0px rgba(239, 68, 68, 0);
+      ">
+        <span style="color: #09090b; font-weight: 900; font-size: 28px; letter-spacing: -2px; font-family: Inter, sans-serif;">RT</span>
+      </div>
+
+      <!-- Progress Bar Container -->
+      <div style="width: 200px; height: 2px; background: #27272a; border-radius: 999px; overflow: hidden; position: relative;">
+        <div id="splash-bar" style="
+          height: 100%;
+          width: 0%;
+          border-radius: 999px;
+          background: linear-gradient(90deg, #ef4444, #f97316);
+          transition: width 0.1s ease-out;
+        "></div>
+      </div>
+    </div>
+
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+
+    <script>
+      (function() {
+        var splash = document.getElementById('splash');
+        var logo = document.getElementById('splash-logo');
+        var bar = document.getElementById('splash-bar');
+        var progress = 0;
+
+        // Animate logo in
+        setTimeout(function() {
+          logo.style.opacity = '1';
+          logo.style.transform = 'scale(1)';
+        }, 80);
+
+        // Animate progress bar
+        var interval = setInterval(function() {
+          progress += Math.random() * 4 + 1;
+          if (progress >= 100) {
+            progress = 100;
+            clearInterval(interval);
+            bar.style.width = '100%';
+            logo.style.boxShadow = '0 0 50px rgba(239, 68, 68, 0.35)';
+            // Fade out and remove splash
+            setTimeout(function() {
+              splash.style.opacity = '0';
+              splash.style.transform = 'scale(1.03)';
+              setTimeout(function() {
+                splash.style.display = 'none';
+              }, 600);
+            }, 300);
+          } else {
+            bar.style.width = progress + '%';
+            // Dynamic glow on logo
+            if (progress > 50) {
+              var glow = (progress - 50) / 50;
+              logo.style.boxShadow = '0 0 ' + (glow * 40) + 'px rgba(239, 68, 68, ' + (glow * 0.3) + ')';
+            }
+          }
+        }, 30);
+      })();
+    </script>
+    <script
+      defer
+      src="%VITE_ANALYTICS_ENDPOINT%/umami"
+      data-website-id="%VITE_ANALYTICS_WEBSITE_ID%"></script>
+  </body>
+
+</html>

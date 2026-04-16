@@ -1,0 +1,419 @@
+/* Heart Rate Monitor Styles */
+
+:root {
+  --zone-1: #3b82f6;
+  --zone-2: #10b981;
+  --zone-3: #f59e0b;
+  --zone-4: #f97316;
+  --zone-5: #ef4444;
+}
+
+.hr-widget {
+  background: var(--bg-secondary, #18181b);
+  border: 1px solid var(--border-color, #3f3f46);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin: 1rem 0;
+  transition: all 0.3s ease;
+}
+
+.hr-widget.connected {
+  border-color: var(--accent-primary, #3b82f6);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.2);
+}
+
+.hr-widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.hr-widget-header:hover {
+  opacity: 0.8;
+}
+
+.hr-widget-bpm {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.hr-widget-bpm-value {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--text-primary, #fafafa);
+}
+
+.hr-widget-zone {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: white;
+  min-width: 80px;
+  text-align: center;
+}
+
+.hr-widget-zone.zone-1 {
+  background-color: var(--zone-1);
+}
+
+.hr-widget-zone.zone-2 {
+  background-color: var(--zone-2);
+}
+
+.hr-widget-zone.zone-3 {
+  background-color: var(--zone-3);
+}
+
+.hr-widget-zone.zone-4 {
+  background-color: var(--zone-4);
+}
+
+.hr-widget-zone.zone-5 {
+  background-color: var(--zone-5);
+}
+
+.hr-widget-toggle {
+  background: none;
+  border: none;
+  color: var(--text-primary, #fafafa);
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+}
+
+.hr-widget-content {
+  display: none;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color, #3f3f46);
+}
+
+.hr-widget.expanded .hr-widget-content {
+  display: block;
+}
+
+.hr-widget-status {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.hr-widget-status-item {
+  background: var(--bg-primary, #09090b);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.hr-widget-status-label {
+  color: var(--text-secondary, #a1a1aa);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.hr-widget-status-value {
+  color: var(--text-primary, #fafafa);
+  font-weight: 600;
+  font-size: 1.125rem;
+}
+
+.hr-widget-buttons {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.hr-widget-button {
+  flex: 1;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: white;
+}
+
+.hr-widget-button.primary {
+  background: var(--accent-primary, #3b82f6);
+}
+
+.hr-widget-button.primary:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.hr-widget-button.secondary {
+  background: var(--bg-primary, #09090b);
+  border: 1px solid var(--border-color, #3f3f46);
+  color: var(--text-primary, #fafafa);
+}
+
+.hr-widget-button.secondary:hover:not(:disabled) {
+  background: var(--bg-secondary, #18181b);
+}
+
+.hr-widget-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.hr-widget-error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  margin-top: 0.75rem;
+}
+
+/* Heart Rate Monitor Page */
+
+.hr-monitor-container {
+  min-height: 100vh;
+  background: var(--bg-primary, #09090b);
+  color: var(--text-primary, #fafafa);
+}
+
+.hr-monitor-header {
+  background: var(--bg-secondary, #18181b);
+  border-bottom: 1px solid var(--border-color, #3f3f46);
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.hr-monitor-back {
+  background: none;
+  border: none;
+  color: var(--text-primary, #fafafa);
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.hr-monitor-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.hr-monitor-content {
+  padding: 1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.hr-monitor-card {
+  background: var(--bg-secondary, #18181b);
+  border: 1px solid var(--border-color, #3f3f46);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.hr-monitor-bpm-display {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.hr-monitor-bpm-value {
+  font-size: 4rem;
+  font-weight: 900;
+  margin-bottom: 0.5rem;
+}
+
+.hr-monitor-zone-display {
+  font-size: 1.25rem;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  display: inline-block;
+  color: white;
+  margin-top: 1rem;
+}
+
+.hr-monitor-zone-display.zone-1 {
+  background-color: var(--zone-1);
+}
+
+.hr-monitor-zone-display.zone-2 {
+  background-color: var(--zone-2);
+}
+
+.hr-monitor-zone-display.zone-3 {
+  background-color: var(--zone-3);
+}
+
+.hr-monitor-zone-display.zone-4 {
+  background-color: var(--zone-4);
+}
+
+.hr-monitor-zone-display.zone-5 {
+  background-color: var(--zone-5);
+}
+
+.hr-monitor-compatibility-warning {
+  background: rgba(217, 119, 6, 0.1);
+  border: 1px solid rgba(217, 119, 6, 0.3);
+  color: #fcd34d;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+.hr-monitor-session-controls {
+  display: flex;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.hr-monitor-session-btn {
+  flex: 1;
+  padding: 0.875rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: white;
+  font-size: 0.875rem;
+}
+
+.hr-monitor-session-btn.start {
+  background: #10b981;
+}
+
+.hr-monitor-session-btn.start:hover:not(:disabled) {
+  background: #059669;
+}
+
+.hr-monitor-session-btn.stop {
+  background: #ef4444;
+}
+
+.hr-monitor-session-btn.stop:hover:not(:disabled) {
+  background: #dc2626;
+}
+
+.hr-monitor-session-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.hr-monitor-zone-timers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.hr-monitor-zone-timer {
+  background: var(--bg-primary, #09090b);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  border-left: 4px solid;
+}
+
+.hr-monitor-zone-timer.zone-1 {
+  border-left-color: var(--zone-1);
+}
+
+.hr-monitor-zone-timer.zone-2 {
+  border-left-color: var(--zone-2);
+}
+
+.hr-monitor-zone-timer.zone-3 {
+  border-left-color: var(--zone-3);
+}
+
+.hr-monitor-zone-timer.zone-4 {
+  border-left-color: var(--zone-4);
+}
+
+.hr-monitor-zone-timer.zone-5 {
+  border-left-color: var(--zone-5);
+}
+
+.hr-monitor-zone-timer-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary, #a1a1aa);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.hr-monitor-zone-timer-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.hr-monitor-summary {
+  background: var(--bg-secondary, #18181b);
+  border: 1px solid var(--border-color, #3f3f46);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin: 1rem 0;
+}
+
+.hr-monitor-summary-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.hr-monitor-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.hr-monitor-summary-item {
+  background: var(--bg-primary, #09090b);
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.hr-monitor-summary-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary, #a1a1aa);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.hr-monitor-summary-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.hr-monitor-chart {
+  width: 100%;
+  height: 300px;
+  margin: 1rem 0;
+}
+
+@media (max-width: 640px) {
+  .hr-monitor-bpm-value {
+    font-size: 3rem;
+  }
+
+  .hr-monitor-zone-timers {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hr-widget-bpm-value {
+    font-size: 1.5rem;
+  }
+}
