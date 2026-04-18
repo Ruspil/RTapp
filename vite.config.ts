@@ -177,17 +177,19 @@ export default defineConfig({
         // bust the same hash as third-party libraries.
         manualChunks(id) {
           if (!id.includes("node_modules")) return undefined;
-          if (id.includes("react") || id.includes("scheduler")) return "vendor-react";
-          if (id.includes("@radix-ui") || id.includes("/radix-ui/")) return "vendor-radix";
-          if (id.includes("recharts") || id.includes("d3-")) return "vendor-charts";
+          // Order matters: more-specific matchers first so radix/etc. don't
+          // get pulled into vendor-react just because their path contains "react".
+          if (id.includes("@radix-ui") || /[\\/]node_modules[\\/]radix-ui[\\/]/.test(id))
+            return "vendor-radix";
+          if (id.includes("recharts") || /[\\/]d3-/.test(id)) return "vendor-charts";
           if (id.includes("framer-motion")) return "vendor-motion";
           if (id.includes("lucide-react")) return "vendor-icons";
-          if (
-            id.includes("react-hook-form") ||
-            id.includes("@hookform") ||
-            id.includes("/zod/")
-          )
+          if (id.includes("react-hook-form") || id.includes("@hookform") || /[\\/]zod[\\/]/.test(id))
             return "vendor-forms";
+          if (
+            /[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/.test(id)
+          )
+            return "vendor-react";
           return "vendor";
         },
       },
