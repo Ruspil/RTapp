@@ -22,3 +22,9 @@ export function setAuthToken(token: string | null) {
     /* ignore */
   }
 }
+
+/** Returns `Authorization: Bearer ...` headers if a token is stored, else `{}`. */
+export function authHeader(): Record<string, string> {
+  const token = getAuthToken();
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}

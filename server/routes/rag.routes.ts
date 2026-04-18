@@ -1,8 +1,8 @@
 import { Router } from "express";
-import * as ai from "../controllers/ai.controller";
+import * as rag from "../controllers/rag.controller";
 import { authMiddleware } from "../middleware/auth.middleware";
 import { aiLimiter } from "../middleware/rateLimit.middleware";
 
-export const aiRouter = Router();
+export const ragRouter = Router();
 
-aiRouter.post("/chat", authMiddleware, aiLimiter, ai.postChat);
+ragRouter.post("/retrieve", authMiddleware, aiLimiter, rag.postRetrieve);

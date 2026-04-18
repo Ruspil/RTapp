@@ -9,4 +9,4 @@ workoutRouter.get("/logs", authMiddleware, workout.getLogs);
 workoutRouter.get("/profile", authMiddleware, workout.getProfile);
 workoutRouter.put("/profile", authMiddleware, workout.putProfile);
 workoutRouter.post("/feedback", authMiddleware, workout.postFeedback);
-workoutRouter.get("/generate", workout.getGenerated);
+workoutRouter.get("/generate", authMiddleware, workout.getGenerated);

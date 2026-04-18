@@ -40,14 +40,43 @@ export const generateWorkoutQuery = z.object({
   minutes: z.coerce.number().int().min(15).max(120).default(45),
 });
 
-export const aiChatBody = z.object({
-  messages: z
-    .array(
-      z.object({
-        role: z.enum(["user", "assistant", "system"]),
-        content: z.string(),
-      }),
-    )
-    .max(30),
-  context: z.string().max(8000).optional(),
+export const ragRetrieveBody = z.object({
+  query: z.string().min(1).max(2000),
+  topK: z.number().int().min(1).max(12).optional(),
 });
+
+/** Per-message and total content caps to bound LLM cost / abuse. */
+const AI_MESSAGE_MAX_CHARS = 4000;
+const AI_TOTAL_MAX_CHARS = 24000;
+
+export const aiChatBody = z
+  .object({
+    messages: z
+      .array(
+        z.object({
+          role: z.enum(["user", "assistant", "system"]),
+          content: z.string().min(1).max(AI_MESSAGE_MAX_CHARS),
+        }),
+      )
+      .min(1)
+      .max(30),
+    context: z.string().max(8000).optional(),
+    /** Optional override for response cap. Server clamps to a safe range. */
+    maxTokens: z.number().int().min(64).max(8000).optional(),
+    /** Optional sampling temperature override. */
+    temperature: z.number().min(0).max(2).optional(),
+    /** When true, asks Groq for JSON-only output (response_format json_object). */
+    jsonMode: z.boolean().optional(),
+  })
+  .superRefine((val, ctx) => {
+    const total =
+      val.messages.reduce((s, m) => s + m.content.length, 0) +
+      (val.context?.length ?? 0);
+    if (total > AI_TOTAL_MAX_CHARS) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `Conversation trop longue (${total} > ${AI_TOTAL_MAX_CHARS} caractères).`,
+        path: ["messages"],
+      });
+    }
+  });

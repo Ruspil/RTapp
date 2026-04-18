@@ -64,27 +64,34 @@ export async function getProfile(userId: string) {
 }
 
 export async function addFeedback(userId: string, rating: number, body?: string | null) {
-  const fb = await prisma.sessionFeedback.create({
-    data: { userId, rating, body: body ?? null },
-  });
-  // Simple adaptation: nudge difficultyBias based on rolling feedback (last 5)
-  const recent = await prisma.sessionFeedback.findMany({
-    where: { userId },
-    orderBy: { createdAt: "desc" },
-    take: 5,
-  });
-  const avg = recent.reduce((s, r) => s + r.rating, 0) / recent.length;
-  let delta = 0;
-  if (avg <= 2) delta = -0.15;
-  else if (avg >= 4) delta = 0.1;
-  if (delta !== 0) {
-    const profile = await prisma.userProfile.findUnique({ where: { userId } });
-    const next = Math.min(1, Math.max(-1, (profile?.difficultyBias ?? 0) + delta));
-    await prisma.userProfile.upsert({
-      where: { userId },
-      create: { userId, difficultyBias: next },
-      update: { difficultyBias: next },
+  // Wrap insert + rolling-average + bias upsert in a transaction so concurrent
+  // feedback writes can't corrupt difficultyBias.
+  return prisma.$transaction(async (tx) => {
+    const fb = await tx.sessionFeedback.create({
+      data: { userId, rating, body: body ?? null },
     });
-  }
-  return fb;
+    const recent = await tx.sessionFeedback.findMany({
+      where: { userId },
+      orderBy: { createdAt: "desc" },
+      take: 5,
+      select: { rating: true },
+    });
+    const avg = recent.reduce((s, r) => s + r.rating, 0) / recent.length;
+    let delta = 0;
+    if (avg <= 2) delta = -0.15;
+    else if (avg >= 4) delta = 0.1;
+    if (delta !== 0) {
+      const profile = await tx.userProfile.findUnique({
+        where: { userId },
+        select: { difficultyBias: true },
+      });
+      const next = Math.min(1, Math.max(-1, (profile?.difficultyBias ?? 0) + delta));
+      await tx.userProfile.upsert({
+        where: { userId },
+        create: { userId, difficultyBias: next },
+        update: { difficultyBias: next },
+      });
+    }
+    return fb;
+  });
 }

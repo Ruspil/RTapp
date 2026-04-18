@@ -1,5 +1,5 @@
-import { useState, useCallback } from "react"
-import { apiBase } from "@/lib/api"
+import { useState, useCallback, useRef } from "react"
+import { apiBase, authHeader } from "@/lib/api"
 
 export interface ChatMessage {
   id: string
@@ -24,10 +24,13 @@ export function useAIChat({ context }: UseAIChatOptions = {}) {
   ])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const isLoadingRef = useRef(false)
+  const messagesRef = useRef(messages)
+  messagesRef.current = messages
 
   const sendMessage = useCallback(
     async (userMessage: string) => {
-      if (!userMessage.trim() || isLoading) return
+      if (!userMessage.trim() || isLoadingRef.current) return
 
       const userMsg: ChatMessage = {
         id: `user-${Date.now()}`,
@@ -36,11 +39,12 @@ export function useAIChat({ context }: UseAIChatOptions = {}) {
         timestamp: Date.now(),
       }
 
+      isLoadingRef.current = true
       setMessages((prev) => [...prev, userMsg])
       setIsLoading(true)
       setError(null)
 
-      const historyForApi = [...messages.filter((m) => m.id !== "welcome"), userMsg]
+      const historyForApi = [...messagesRef.current.filter((m) => m.id !== "welcome"), userMsg]
         .slice(-8)
         .map((m) => ({
           role: m.role as "user" | "assistant",
@@ -50,7 +54,7 @@ export function useAIChat({ context }: UseAIChatOptions = {}) {
       try {
         const res = await fetch(`${apiBase()}/api/ai/chat`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", ...authHeader() },
           body: JSON.stringify({
             messages: historyForApi,
             context,
@@ -73,10 +77,11 @@ export function useAIChat({ context }: UseAIChatOptions = {}) {
         const msg = err instanceof Error ? err.message : "Erreur de connexion"
         setError(msg)
       } finally {
+        isLoadingRef.current = false
         setIsLoading(false)
       }
     },
-    [messages, isLoading, context],
+    [context],
   )
 
   const clearMessages = useCallback(() => {

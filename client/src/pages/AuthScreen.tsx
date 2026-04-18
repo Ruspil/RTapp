@@ -1,29 +1,21 @@
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
+import type { z } from "zod"
+import { loginBody, registerBody } from "@shared/validation/api"
 import { apiBase, setAuthToken } from "@/lib/api"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
-const loginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(1),
-})
-
-const registerSchema = loginSchema.extend({
-  name: z.string().min(1).max(80).optional(),
-})
-
-type LoginValues = z.infer<typeof loginSchema>
-type RegisterValues = z.infer<typeof registerSchema>
+type LoginValues = z.infer<typeof loginBody>
+type RegisterValues = z.infer<typeof registerBody>
 
 export function AuthScreen({ onDone }: { onDone: () => void }) {
   const [mode, setMode] = useState<"login" | "register">("login")
   const [formError, setFormError] = useState<string | null>(null)
 
-  const loginForm = useForm<LoginValues>({ resolver: zodResolver(loginSchema) })
-  const registerForm = useForm<RegisterValues>({ resolver: zodResolver(registerSchema) })
+  const loginForm = useForm<LoginValues>({ resolver: zodResolver(loginBody) })
+  const registerForm = useForm<RegisterValues>({ resolver: zodResolver(registerBody) })
 
   async function submitLogin(values: LoginValues) {
     setFormError(null)
