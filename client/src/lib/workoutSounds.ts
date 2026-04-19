@@ -2,7 +2,11 @@
  * Short beeps using Web Audio (no asset files). Requires a user gesture first on some browsers.
  */
 
+import { getSfxEnabled, getSfxVolume } from "@/lib/soundSettings"
+
 let audioCtx: AudioContext | null = null
+let masterGain: GainNode | null = null
+let masterCompressor: DynamicsCompressorNode | null = null
 
 function ctx(): AudioContext {
   if (typeof window === "undefined") throw new Error("no window")
@@ -10,6 +14,26 @@ function ctx(): AudioContext {
     audioCtx = new AudioContext()
   }
   return audioCtx
+}
+
+function master(): { gain: GainNode; compressor: DynamicsCompressorNode } {
+  const ac = ctx()
+  if (!masterGain || !masterCompressor) {
+    // A gentle limiter/compressor so we can drive gain higher on phones.
+    masterCompressor = ac.createDynamicsCompressor()
+    masterCompressor.threshold.setValueAtTime(-18, ac.currentTime)
+    masterCompressor.knee.setValueAtTime(16, ac.currentTime)
+    masterCompressor.ratio.setValueAtTime(8, ac.currentTime)
+    masterCompressor.attack.setValueAtTime(0.003, ac.currentTime)
+    masterCompressor.release.setValueAtTime(0.15, ac.currentTime)
+
+    masterGain = ac.createGain()
+    masterGain.gain.setValueAtTime(1, ac.currentTime)
+
+    masterCompressor.connect(masterGain)
+    masterGain.connect(ac.destination)
+  }
+  return { gain: masterGain, compressor: masterCompressor }
 }
 
 export async function unlockWorkoutAudio(): Promise<void> {
@@ -32,17 +56,24 @@ function beep(
   type: OscillatorType = "sine",
 ): void {
   try {
+    if (!getSfxEnabled()) return
+    // Phones (especially iOS) can render WebAudio quieter. Allow >1 gain,
+    // and rely on the compressor to avoid harsh clipping.
+    const vol = Math.min(Math.max((getSfxVolume() / 100) * 6, 0), 6)
+    if (vol <= 0) return
+
     const ac = ctx()
+    const { compressor } = master()
     const t0 = ac.currentTime
     const osc = ac.createOscillator()
     const g = ac.createGain()
     osc.type = type
     osc.frequency.setValueAtTime(frequency, t0)
     g.gain.setValueAtTime(0, t0)
-    g.gain.linearRampToValueAtTime(volume, t0 + 0.02)
+    g.gain.linearRampToValueAtTime(volume * vol, t0 + 0.02)
     g.gain.exponentialRampToValueAtTime(0.001, t0 + durationMs / 1000)
     osc.connect(g)
-    g.connect(ac.destination)
+    g.connect(compressor)
     osc.start(t0)
     osc.stop(t0 + durationMs / 1000 + 0.05)
   } catch {

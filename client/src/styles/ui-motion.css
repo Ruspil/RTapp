@@ -1,0 +1,57 @@
+/*
+ * ============================================================
+ * UI Motion — minimal set actually used by the app.
+ * - Page-enter shell (App-level transitions)
+ * - Logo breathing (splash + logo)
+ * Reduced motion is honored throughout.
+ * ============================================================
+ */
+
+:root {
+  --ui-motion-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ui-motion-enter-ms: 500;
+}
+
+/* --- Screen entrance (React page changes) --- */
+@keyframes ui-page-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0) scale(0.988);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.ui-page-enter-shell {
+  animation: ui-page-enter calc(var(--ui-motion-enter-ms) * 1ms) var(--ui-motion-ease-out) both;
+  will-change: opacity, transform;
+}
+
+/* --- Logo breathing (splash + welcome) --- */
+@keyframes ui-logo-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.035); }
+}
+
+.ui-logo-breathe {
+  animation: ui-logo-breathe 2.8s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* --- Accessibility: respect reduced-motion --- */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --ui-motion-enter-ms: 0;
+  }
+  .ui-page-enter-shell {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+  }
+  .ui-logo-breathe {
+    animation: none;
+  }
+}

@@ -1,0 +1,302 @@
+[
+  {
+    "id": "po-01",
+    "text": "Progressive overload: increase one variable per week (load, reps, sets, density) by ~5-10%. Do not raise weekly volume by more than ~10% to limit injury risk.",
+    "source": "Progressive overload — Kraemer & Ratamess, ACSM",
+    "tags": ["overload", "programming", "volume"]
+  },
+  {
+    "id": "po-02",
+    "text": "Acute:chronic workload ratio (ACWR) sweet spot is 0.8-1.3. Above 1.5 sharply increases soft-tissue injury risk in team-sport athletes.",
+    "source": "Gabbett (2016), British Journal of Sports Medicine",
+    "tags": ["acwr", "injury-prevention", "monitoring"]
+  },
+  {
+    "id": "rpe-01",
+    "text": "Rate of Perceived Exertion (RPE) on a 1-10 scale: RPE 6 = 4 reps in reserve, RPE 8 = 2 RIR, RPE 9 = 1 RIR, RPE 10 = max effort. Use RPE 6-8 for hypertrophy/strength accumulation, 8-9 for intensification.",
+    "source": "Helms et al., RIR-based RPE",
+    "tags": ["rpe", "intensity", "autoregulation"]
+  },
+  {
+    "id": "rpe-02",
+    "text": "Autoregulation via RPE allows day-to-day adjustment when fatigue is high (low HRV, poor sleep). Reduce target load by 5-10% to maintain target RPE without overshooting fatigue.",
+    "source": "Zourdos et al., Strength & Conditioning Journal",
+    "tags": ["rpe", "autoregulation", "recovery"]
+  },
+  {
+    "id": "deload-01",
+    "text": "Deload weeks every 4-6 weeks reduce volume to ~50-60% with similar intensity. They preserve strength, restore CNS, and allow soft-tissue recovery.",
+    "source": "Periodization — Bompa & Buzzichelli",
+    "tags": ["deload", "recovery", "periodization"]
+  },
+  {
+    "id": "deload-02",
+    "text": "Signs to trigger an unscheduled deload: 3+ consecutive sessions with stalled performance, persistent soreness >72h, HRV drop >10% from rolling baseline, sleep <6h for 3+ nights.",
+    "source": "Athlete monitoring — Halson (2014)",
+    "tags": ["deload", "monitoring", "hrv"]
+  },
+  {
+    "id": "vol-01",
+    "text": "Hypertrophy: 10-20 hard sets per muscle group per week (RPE 7-9). Beginners closer to 10, advanced lifters up to 20 with proper recovery.",
+    "source": "Schoenfeld meta-analyses (2017, 2019)",
+    "tags": ["hypertrophy", "volume", "muscle"]
+  },
+  {
+    "id": "vol-02",
+    "text": "Strength: 4-6 hard sets per main lift per week at 80-90% 1RM, 3-5 reps, 3-5 min rest. Doublets and singles included near peak.",
+    "source": "NSCA Essentials of Strength Training & Conditioning, 4e",
+    "tags": ["strength", "volume", "intensity"]
+  },
+  {
+    "id": "vol-03",
+    "text": "Power and explosive output: 1-3 reps per set at 30-50% of 1RM with maximal bar speed. 3-6 sets, full recovery (2-5 min) between sets to maintain quality.",
+    "source": "González-Badillo & Ribas (Force-Velocity)",
+    "tags": ["power", "speed", "strength"]
+  },
+  {
+    "id": "freq-01",
+    "text": "Training a muscle group 2x/week produces ~3.1% greater hypertrophy than 1x/week with matched volume. Spreading volume preserves quality and reduces fatigue per session.",
+    "source": "Schoenfeld et al. (2016) meta-analysis",
+    "tags": ["frequency", "hypertrophy", "programming"]
+  },
+  {
+    "id": "rest-01",
+    "text": "Rest 3-5 minutes between sets for compound strength/power lifts; 60-120 s for hypertrophy accessories; 30-60 s for metabolic finishers.",
+    "source": "ACSM Position Stand",
+    "tags": ["rest", "intensity", "programming"]
+  },
+  {
+    "id": "warm-01",
+    "text": "Warm-up: 5-8 min general (raise core temp), then RAMP (Raise, Activate, Mobilise, Potentiate). Add 2-3 ramp-up sets at 50-70-85% before working sets.",
+    "source": "Jeffreys, RAMP protocol",
+    "tags": ["warmup", "preparation", "ramp"]
+  },
+  {
+    "id": "ham-01",
+    "text": "Nordic hamstring exercise 2x/week reduces hamstring strain incidence by ~51% in soccer players. Start with 2x5 eccentric reps, progress to 3x8-12 over 6-8 weeks.",
+    "source": "Petersen et al. (2011); van Dyk meta-analysis (2019)",
+    "tags": ["football", "injury-prevention", "hamstrings"]
+  },
+  {
+    "id": "ham-02",
+    "text": "Hamstring training balance: combine hip-dominant (RDL, Nordic) and knee-flexion (leg curl) for full posterior chain coverage. Eccentric-biased work most protective.",
+    "source": "Bourne et al., Hamstring strain prevention",
+    "tags": ["hamstrings", "injury-prevention", "eccentric"]
+  },
+  {
+    "id": "fb-pos-gk",
+    "text": "Goalkeepers prioritize lateral power, reactive jumps, and rotational core strength. Heavy lower-body strength 2x/week, plyometrics emphasizing lateral bound and box jumps.",
+    "source": "Football positional training — Bangsbo",
+    "tags": ["football", "goalkeeper", "position-specific"]
+  },
+  {
+    "id": "fb-pos-cb",
+    "text": "Centre-backs need maximal strength, aerial power, and short-distance acceleration (5-15 m). Squat/deadlift base + jump squats + sled pushes.",
+    "source": "Position-specific demands — Di Salvo et al.",
+    "tags": ["football", "defender", "position-specific"]
+  },
+  {
+    "id": "fb-pos-fb",
+    "text": "Fullbacks/wingbacks cover 11-12 km/match with high repeated-sprint demand. Train repeated-sprint ability (6x40 m, 20 s rest) plus eccentric hamstring work.",
+    "source": "Repeated Sprint Ability — Bishop et al.",
+    "tags": ["football", "fullback", "rsa", "endurance"]
+  },
+  {
+    "id": "fb-pos-cm",
+    "text": "Central midfielders need aerobic power (vVO2max work) and repeated change-of-direction. 4 min @ 90-95% HRmax x 4 reps with 3 min jog. Add COD ladders 2x/week.",
+    "source": "Helgerud et al. soccer-specific endurance",
+    "tags": ["football", "midfielder", "aerobic", "vo2max"]
+  },
+  {
+    "id": "fb-pos-w",
+    "text": "Wingers train top-end speed (30-40 m sprints), 1v1 deceleration, and unilateral power (split squat jumps). 6-8 max sprints with 90-180 s rest.",
+    "source": "Sprint training — Haugen et al.",
+    "tags": ["football", "winger", "sprint", "speed"]
+  },
+  {
+    "id": "fb-pos-st",
+    "text": "Strikers prioritize first-step quickness, jump height, and shot power. Trap-bar jumps, depth jumps from 30-40 cm, and rotational med-ball throws.",
+    "source": "Power output — Cormie et al.",
+    "tags": ["football", "striker", "power", "jumps"]
+  },
+  {
+    "id": "cond-01",
+    "text": "High-intensity intervals (HIIT) 2x/week improve VO2max more than steady state. 4x4 min at 90-95% HRmax with 3 min active recovery is the gold standard.",
+    "source": "Helgerud et al. (2007), MSSE",
+    "tags": ["conditioning", "vo2max", "hiit"]
+  },
+  {
+    "id": "cond-02",
+    "text": "Sport-specific conditioning: small-sided games (4v4 to 6v6) on reduced pitch elicit HR responses similar to interval running while preserving technical work.",
+    "source": "Hill-Haas et al. SSG meta-analysis",
+    "tags": ["football", "conditioning", "ssg"]
+  },
+  {
+    "id": "cond-03",
+    "text": "Maximal aerobic speed (MAS) intervals: 15 s @ 100-120% MAS / 15 s rest x 12-20 reps. Builds repeated-sprint capacity without excessive volume.",
+    "source": "Buchheit & Laursen, HIIT science",
+    "tags": ["conditioning", "mas", "rsa"]
+  },
+  {
+    "id": "plyo-01",
+    "text": "Plyometric progression: extensive (low-intensity, high-volume hops) → intensive (depth jumps, single-leg) → reactive. 4-6 weeks per phase, 60-120 ground contacts/session.",
+    "source": "Plyometric training — Chu & Myer",
+    "tags": ["plyometrics", "power", "progression"]
+  },
+  {
+    "id": "plyo-02",
+    "text": "Drop jump height 30-50 cm optimizes reactive strength index (RSI) for most athletes. Land on mid-foot, keep ground contact <250 ms.",
+    "source": "Reactive Strength Index — Flanagan",
+    "tags": ["plyometrics", "rsi", "jump"]
+  },
+  {
+    "id": "speed-01",
+    "text": "Maximum-velocity sprinting requires full recovery: 1 min per 10 m sprinted, 6-10 sprints/session, 1-2 sessions/week. Keep total volume <300 m sprinted.",
+    "source": "Haugen, sprint coaching",
+    "tags": ["speed", "sprint", "recovery"]
+  },
+  {
+    "id": "speed-02",
+    "text": "Acceleration training (10-20 m): resisted sprints with 10-20% body-mass sled load improve early acceleration mechanics. 6-8 reps with full recovery.",
+    "source": "Cross et al., resisted sprints",
+    "tags": ["acceleration", "speed", "resisted"]
+  },
+  {
+    "id": "core-01",
+    "text": "Core training: prioritize anti-extension (planks, dead bug), anti-rotation (pallof press), and anti-lateral flexion (suitcase carry). 2-3 exercises x 2-3 sets, 2-3x/week.",
+    "source": "McGill, Ultimate Back Fitness",
+    "tags": ["core", "stability", "low-back"]
+  },
+  {
+    "id": "rec-01",
+    "text": "Sleep 7-9 h/night is the single largest recovery lever. Each hour below 7 increases injury risk ~1.7x in adolescent athletes.",
+    "source": "Milewski et al. (2014)",
+    "tags": ["recovery", "sleep", "injury-prevention"]
+  },
+  {
+    "id": "rec-02",
+    "text": "HRV (RMSSD) tracked daily: a >10% drop from 7-day rolling average for 2+ days suggests reduced readiness. Lower intensity or convert to skill/recovery.",
+    "source": "Plews & Laursen, HRV-guided training",
+    "tags": ["hrv", "recovery", "monitoring"]
+  },
+  {
+    "id": "rec-03",
+    "text": "Protein intake 1.6-2.2 g/kg/day distributed across 3-5 meals supports hypertrophy and recovery. Post-workout 0.3-0.4 g/kg within 2 h optimal.",
+    "source": "Morton et al. (2018) meta-analysis",
+    "tags": ["nutrition", "protein", "recovery"]
+  },
+  {
+    "id": "rec-04",
+    "text": "Active recovery (15-30 min low-intensity cycling/walking) the day after high-intensity work clears metabolites and reduces DOMS more than complete rest.",
+    "source": "ACSM recovery position stand",
+    "tags": ["recovery", "active", "doms"]
+  },
+  {
+    "id": "beg-01",
+    "text": "Beginners (<1 year training): 3 full-body sessions/week with compound lifts (squat, hinge, push, pull, carry). 2-3 sets x 8-12 reps, RPE 6-7.",
+    "source": "Starting Strength / Practical Programming",
+    "tags": ["beginner", "programming", "full-body"]
+  },
+  {
+    "id": "int-01",
+    "text": "Intermediate (1-3 years): upper/lower split 4x/week or push/pull/legs 6x/week. Include accessory volume + autoregulated top sets.",
+    "source": "Practical Programming — Rippetoe & Kilgore",
+    "tags": ["intermediate", "split", "programming"]
+  },
+  {
+    "id": "adv-01",
+    "text": "Advanced (3+ years): block periodization (accumulation 3-4 wk → intensification 2-3 wk → realization 1-2 wk → deload). Specialize one quality per block.",
+    "source": "Issurin, Block Periodization",
+    "tags": ["advanced", "periodization", "blocks"]
+  },
+  {
+    "id": "fl-01",
+    "text": "Fat loss: target ~0.5-1% body weight loss per week via -300 to -500 kcal deficit. Maintain protein 2.0-2.4 g/kg and 2x/week resistance training to preserve lean mass.",
+    "source": "Helms et al., natural physique research",
+    "tags": ["fat-loss", "nutrition", "lean-mass"]
+  },
+  {
+    "id": "end-01",
+    "text": "Endurance base: 80% of weekly volume at conversational pace (Z2, 60-75% HRmax), 20% at threshold/HIIT. Polarized model outperforms middle-intensity grind.",
+    "source": "Seiler, polarized training",
+    "tags": ["endurance", "polarized", "z2"]
+  },
+  {
+    "id": "fb-warm",
+    "text": "FIFA 11+ warm-up done 2x/week reduces overall injury rate ~30% and ACL injuries ~50% in football. 20 minutes pre-training.",
+    "source": "FIFA Medical Centre — Bizzini & Dvorak",
+    "tags": ["football", "warmup", "injury-prevention"]
+  },
+  {
+    "id": "fb-cod",
+    "text": "Change-of-direction (COD) training: 5-0-5 test, T-test drills, and reactive cuts off a coach signal. 4-6 reps, 60-90 s rest, 2x/week, surrounded by lower-body strength.",
+    "source": "COD Speed — Sheppard & Young",
+    "tags": ["football", "cod", "agility"]
+  },
+  {
+    "id": "fb-decel",
+    "text": "Deceleration capacity (eccentric quad strength) is highly correlated with COD performance and injury resilience. Single-leg squats and slow lowering 4-0-X tempo.",
+    "source": "Harper et al., deceleration in football",
+    "tags": ["football", "deceleration", "eccentric"]
+  },
+  {
+    "id": "mob-01",
+    "text": "Mobility focus before training: hip flexor and ankle dorsiflexion CARs, T-spine rotation. 5-8 minutes; long static holds (>60 s) only post-session or on rest days.",
+    "source": "FRC mobility — Spina",
+    "tags": ["mobility", "warmup", "preparation"]
+  },
+  {
+    "id": "lb-01",
+    "text": "Lumbar spine pain: avoid loaded spinal flexion under fatigue. Substitute back squat with safety-bar or front squat, RDL with hip thrust if pain persists.",
+    "source": "McGill, low back disorders",
+    "tags": ["low-back", "injury", "substitution"]
+  },
+  {
+    "id": "knee-01",
+    "text": "Knee pain (anterior/patellar): avoid deep BB squats temporarily; use leg press at 60-90° and add Spanish squats and slow eccentric step-downs to load tendon.",
+    "source": "Patellar tendinopathy — Malliaras et al.",
+    "tags": ["knee", "tendinopathy", "rehab"]
+  },
+  {
+    "id": "shldr-01",
+    "text": "Shoulder discomfort: replace overhead press with landmine press or incline DB press; prioritize external rotators (face pulls, band pull-aparts) and serratus work.",
+    "source": "Shoulder rehab — Cook & Burkhart",
+    "tags": ["shoulder", "rehab", "substitution"]
+  },
+  {
+    "id": "pln-01",
+    "text": "1-day/week minimum effective dose: full-body, 3 compound lifts (squat, hinge, push or pull), 2-3 sets at RPE 7-8. Maintains strength, slight gains in beginners.",
+    "source": "Minimum effective dose — Mike Israetel",
+    "tags": ["minimum-dose", "programming", "1-day"]
+  },
+  {
+    "id": "pln-23",
+    "text": "2-3 days/week: full-body or upper/lower (2 days) / push-pull-legs (3 days). Compound lifts every session, 4-6 working sets per body part across the week.",
+    "source": "Programming — Helms (Muscle & Strength Pyramids)",
+    "tags": ["programming", "frequency", "split"]
+  },
+  {
+    "id": "pln-456",
+    "text": "4-6 days/week: upper/lower x2 or push/pull/legs x2. Allow 48 h between same-muscle high-intensity sessions. Watch total volume — fatigue compounds.",
+    "source": "High-frequency programming — Helms",
+    "tags": ["programming", "frequency", "high-frequency"]
+  },
+  {
+    "id": "auto-01",
+    "text": "If user picks 'Auto' for days/week: choose 4 d/wk for general fitness, 5 d/wk for sport-specific or hypertrophy goals, 3 d/wk for true beginners or fat-loss with cardio.",
+    "source": "Programming heuristic",
+    "tags": ["auto", "programming", "default"]
+  },
+  {
+    "id": "auto-02",
+    "text": "If user picks 'Auto' for plan length: 6 weeks for fat-loss/general fitness, 8 weeks for sport-specific/strength, 12 weeks only when timing a competition or peak.",
+    "source": "Programming heuristic",
+    "tags": ["auto", "duration", "default"]
+  },
+  {
+    "id": "ssn-len",
+    "text": "Session-length cap: under 45 min, prioritize 1 main lift + 2 accessories + 5 min finisher. Under 30 min, choose density circuits (EMOM/AMRAP) over straight sets.",
+    "source": "Time-efficient training — Iversen et al.",
+    "tags": ["session-length", "time-efficient", "programming"]
+  }
+]

@@ -1,4 +1,5 @@
 import { getDemoVideoUrl } from "./exerciseDemoVideos"
+import { dayNumberToCardioKey, getCardioSession } from "./cardioPlan"
 
 export type SessionType = "workout" | "primer"
 
@@ -46,6 +47,18 @@ export interface CompletedSession {
   completedAt: string
   durationSeconds: number
   percentComplete: number
+}
+
+const COMPLETED_SESSIONS_KEY = "trainhard-completed"
+
+/** Charge les sessions complétées depuis le même stockage que `App` (localStorage). */
+export function loadCompletedSessionsFromStorage(): CompletedSession[] {
+  try {
+    const raw = localStorage.getItem(COMPLETED_SESSIONS_KEY)
+    return raw ? (JSON.parse(raw) as CompletedSession[]) : []
+  } catch {
+    return []
+  }
 }
 
 export const TOTAL_WEEKS = 12
@@ -607,6 +620,55 @@ const s9_10_vendredi: WeekTemplate[0] = {
   ],
 }
 
+/**
+ * Injecte le contenu canonique du plan cardio (plan_elite_lateral_v2) dans les templates.
+ * — Mardi / Jeudi : remplace la séance cardio complète.
+ * — Autres jours : remplace le dernier exercice « Cardio » du premier bloc séance.
+ */
+function injectCardioFromPlan(week: number, tpl: WeekTemplate[0]): WeekTemplate[0] {
+  const key = dayNumberToCardioKey(tpl.day)
+  if (!key) return tpl
+  const spec = getCardioSession(week, key)
+  if (!spec) return tpl
+
+  const pureCardioDay = tpl.day === 2 || tpl.day === 4
+
+  return {
+    ...tpl,
+    sessions: tpl.sessions.map((s, sessionIdx) => {
+      if (sessionIdx !== 0) return s
+      if (pureCardioDay) {
+        const title = spec.phaseLabel ? `${spec.name} — ${spec.phaseLabel}` : spec.name
+        return {
+          ...s,
+          name: title,
+          duration: spec.durationMinutes,
+          exercises: spec.exercises.map((e, i) => ({
+            ...e,
+            id: `${s.id}-cardio-${i}`,
+          })),
+        }
+      }
+      const ex = [...s.exercises]
+      const cardioIdx = ex.findLastIndex((e) => e.muscles?.includes("Cardio"))
+      if (cardioIdx < 0 || !spec.exercises[0]) return s
+      const patch = spec.exercises[0]
+      ex[cardioIdx] = {
+        ...ex[cardioIdx],
+        name: patch.name,
+        reps: patch.reps,
+        repsLabel: patch.repsLabel,
+        sets: patch.sets,
+        group: patch.group,
+        restSeconds: patch.restSeconds,
+        muscles: patch.muscles,
+        notes: patch.notes,
+      }
+      return { ...s, exercises: ex }
+    }),
+  }
+}
+
 const s11_12_vendredi: WeekTemplate[0] = {
   day: 5,
   sessions: [
@@ -656,7 +718,9 @@ function buildDays(week: number): WorkoutDay[] {
   }
 
   const dayNames = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"]
-  const dayTemplates = [lundi, mardi, mercredi, jeudi, vendredi]
+  const dayTemplates = [lundi, mardi, mercredi, jeudi, vendredi].map((tpl) =>
+    injectCardioFromPlan(week, tpl),
+  )
 
   return dayTemplates.map((tpl) => ({
     day: tpl.day,

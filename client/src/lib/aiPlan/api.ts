@@ -98,6 +98,16 @@ async function callChat(body: ChatRequestBody, opts: CallOptions = {}): Promise<
     })
     const data = (await res.json().catch(() => ({}))) as ChatResponse
     if (!res.ok) {
+      // Friendlier message for the most common auth failure so the user knows
+      // what to do (rather than the raw "Unauthorized" the server sends).
+      if (res.status === 401) {
+        throw Object.assign(
+          new Error(
+            "Tu dois être connecté pour utiliser l'IA. Crée un compte ou connecte-toi, puis réessaie.",
+          ),
+          { status: 401, raw: data.error ?? "Unauthorized" },
+        )
+      }
       const err = data.error ?? `Erreur ${res.status}`
       throw Object.assign(new Error(err), { status: res.status, raw: err })
     }

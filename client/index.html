@@ -6,57 +6,362 @@
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <title>Mon Entraînement Pro Gym & Cardio</title>    
+    <title>Mon Entraînement Pro Gym & Cardio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
     <script>
       // Apply dark theme immediately to prevent flash of white
       document.documentElement.classList.add('dark');
     </script>
-  </head>
+    <style>
+      /* ===== Splash Screen — "ATHLETE PROTOCOL" ===== */
+      #splash {
+        position: fixed;
+        inset: 0;
+        background: #0a0a0a;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        font-family: Inter, system-ui, sans-serif;
+        transition: opacity 0.55s ease, transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+      }
+      #splash.--leaving {
+        opacity: 0;
+        transform: translateY(-1.5%) scale(1.04);
+      }
 
-  <body>
-    <!-- Splash Screen -->
-    <div id="splash" style="
-      position: fixed;
-      inset: 0;
-      background: #09090b;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    ">
-      <!-- Logo RT -->
-      <div id="splash-logo" style="
+      /* Subtle film grain (CSS-only via SVG noise) */
+      #splash::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.06;
+        mix-blend-mode: overlay;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+      }
+
+      /* Vignette to focus the eye */
+      #splash::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.55) 100%);
+      }
+
+      /* Top + bottom scan lines (animated) */
+      .splash-scan {
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.55) 50%, transparent 100%);
+        transform: scaleX(0);
+        transform-origin: left center;
+        animation: scan-in 0.55s cubic-bezier(0.65, 0, 0.35, 1) 0.05s forwards;
+      }
+      .splash-scan.--top { top: calc(env(safe-area-inset-top, 0) + 20px); }
+      .splash-scan.--bottom {
+        bottom: calc(env(safe-area-inset-bottom, 0) + 20px);
+        animation-delay: 0.15s;
+        transform-origin: right center;
+      }
+      @keyframes scan-in {
+        0% { transform: scaleX(0); opacity: 0; }
+        50% { opacity: 1; }
+        100% { transform: scaleX(1); opacity: 0.5; }
+      }
+
+      /* Eyebrow tag */
+      .splash-eyebrow {
+        position: absolute;
+        top: calc(env(safe-area-inset-top, 0) + 36px);
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 10px;
+        letter-spacing: 0.4em;
+        font-weight: 800;
+        color: rgba(255,255,255,0.45);
+        text-transform: uppercase;
+        opacity: 0;
+        animation: fade-in 0.45s ease 0.55s forwards;
+      }
+
+      .splash-version {
+        position: absolute;
+        bottom: calc(env(safe-area-inset-bottom, 0) + 36px);
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 9px;
+        letter-spacing: 0.32em;
+        font-weight: 700;
+        color: rgba(255,255,255,0.3);
+        text-transform: uppercase;
+        opacity: 0;
+        animation: fade-in 0.45s ease 0.7s forwards;
+        font-family: "JetBrains Mono", monospace;
+      }
+      @keyframes fade-in {
+        from { opacity: 0; transform: translateX(-50%) translateY(4px); }
+        to { opacity: 1; transform: translateX(-50%) translateY(0); }
+      }
+
+      /* Center stage */
+      .splash-stage {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 32px;
+      }
+
+      /* Ripple ring around the logo */
+      .splash-ripple {
+        position: absolute;
+        top: 48px;
+        left: 50%;
+        width: 96px;
+        height: 96px;
+        border-radius: 22px;
+        border: 1.5px solid rgba(255,255,255,0.7);
+        transform: translate(-50%, 0) scale(0.85);
+        opacity: 0;
+        pointer-events: none;
+      }
+      .splash-ripple.--r1 { animation: ripple 1.4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.6s forwards; }
+      .splash-ripple.--r2 { animation: ripple 1.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.8s forwards; }
+      @keyframes ripple {
+        0% { transform: translate(-50%, 0) scale(0.85); opacity: 0.55; }
+        100% { transform: translate(-50%, 0) scale(2.4); opacity: 0; }
+      }
+
+      /* Logo block */
+      #splash-logo {
         width: 96px;
         height: 96px;
         background: white;
-        border-radius: 20px;
+        border-radius: 22px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 48px;
         opacity: 0;
-        transform: scale(0.7);
-        transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-        box-shadow: 0 0 0px rgba(239, 68, 68, 0);
-      ">
-        <span style="color: #09090b; font-weight: 900; font-size: 28px; letter-spacing: -2px; font-family: Inter, sans-serif;">RT</span>
+        transform: translateY(-180px) scale(0.4) rotate(-8deg);
+        animation: stamp 0.85s cubic-bezier(0.34, 1.6, 0.46, 1) 0.35s forwards;
+        box-shadow:
+          0 0 0px rgba(255,255,255,0),
+          0 30px 80px rgba(255,255,255,0.05);
+      }
+      @keyframes stamp {
+        0% {
+          opacity: 0;
+          transform: translateY(-180px) scale(0.4) rotate(-8deg);
+        }
+        55% {
+          opacity: 1;
+          transform: translateY(0) scale(1.15) rotate(2deg);
+          box-shadow: 0 0 60px rgba(255,255,255,0.25), 0 30px 80px rgba(255,255,255,0.1);
+        }
+        72% {
+          transform: translateY(0) scale(0.93) rotate(-1deg);
+        }
+        86% {
+          transform: translateY(0) scale(1.04) rotate(0.5deg);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0) scale(1) rotate(0deg);
+          box-shadow: 0 0 30px rgba(255,255,255,0.12), 0 30px 80px rgba(255,255,255,0.05);
+        }
+      }
+      #splash-logo::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 22px;
+        box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+      }
+      #splash-logo span {
+        color: #0a0a0a;
+        font-weight: 900;
+        font-size: 30px;
+        letter-spacing: -2.4px;
+        font-family: Inter, sans-serif;
+        line-height: 1;
+      }
+
+      /* Pulsing breath after stamp settles */
+      .splash-stage.--breathing #splash-logo {
+        animation: breathe 2.4s ease-in-out 1.3s infinite;
+      }
+      @keyframes breathe {
+        0%, 100% { transform: scale(1); box-shadow: 0 0 30px rgba(255,255,255,0.12), 0 30px 80px rgba(255,255,255,0.05); }
+        50% { transform: scale(1.04); box-shadow: 0 0 50px rgba(255,255,255,0.22), 0 30px 80px rgba(255,255,255,0.08); }
+      }
+
+      /* Tagline — typed letter by letter */
+      .splash-tagline {
+        height: 16px;
+        display: flex;
+        align-items: center;
+        gap: 1px;
+        font-size: 11px;
+        letter-spacing: 0.5em;
+        font-weight: 800;
+        color: white;
+        text-transform: uppercase;
+        font-family: Inter, sans-serif;
+      }
+      .splash-tagline span {
+        opacity: 0;
+        transform: translateY(6px);
+        animation: char-in 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      }
+      @keyframes char-in {
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .splash-cursor {
+        display: inline-block;
+        width: 2px;
+        height: 11px;
+        background: white;
+        margin-left: 6px;
+        animation: blink 0.7s steps(2, end) infinite;
+        animation-delay: 1.4s;
+        opacity: 0;
+      }
+      .splash-cursor.--on { opacity: 1; }
+      @keyframes blink {
+        50% { opacity: 0; }
+      }
+
+      /* Bottom progress block */
+      .splash-bottom {
+        position: absolute;
+        bottom: calc(env(safe-area-inset-bottom, 0) + 70px);
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+        width: min(260px, 70vw);
+        opacity: 0;
+        animation: fade-up 0.55s ease 1.2s forwards;
+      }
+      @keyframes fade-up {
+        from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+        to { opacity: 1; transform: translateX(-50%) translateY(0); }
+      }
+      .splash-bar-wrap {
+        position: relative;
+        width: 100%;
+        height: 2px;
+        background: rgba(255,255,255,0.08);
+        border-radius: 999px;
+        overflow: hidden;
+      }
+      #splash-bar {
+        height: 100%;
+        width: 0%;
+        background: white;
+        border-radius: 999px;
+        transition: width 0.12s ease-out;
+        box-shadow: 0 0 12px rgba(255,255,255,0.4);
+      }
+      .splash-bar-shimmer {
+        position: absolute;
+        top: 0;
+        left: -40%;
+        width: 40%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.95) 50%, transparent 100%);
+        animation: shimmer 1.4s linear 1.4s infinite;
+      }
+      @keyframes shimmer {
+        from { left: -40%; }
+        to { left: 100%; }
+      }
+
+      .splash-meta {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        color: rgba(255,255,255,0.55);
+        text-transform: uppercase;
+      }
+
+      /* Floating particles (subtle) */
+      .splash-dust {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+      }
+      .splash-dust span {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background: rgba(255,255,255,0.5);
+        border-radius: 50%;
+        animation: float linear infinite;
+      }
+      @keyframes float {
+        from { transform: translateY(110vh); opacity: 0; }
+        10% { opacity: 0.5; }
+        90% { opacity: 0.5; }
+        to { transform: translateY(-10vh); opacity: 0; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Splash Screen — ATHLETE PROTOCOL -->
+    <div id="splash">
+      <!-- Background dust particles -->
+      <div class="splash-dust" id="splash-dust" aria-hidden="true"></div>
+
+      <!-- Top scan line + eyebrow -->
+      <div class="splash-scan --top" aria-hidden="true"></div>
+      <div class="splash-eyebrow">RUSPIL · TRAINING</div>
+
+      <!-- Center stage: ripples + logo + typed tagline -->
+      <div class="splash-stage" id="splash-stage">
+        <div style="position: relative; height: 96px;">
+          <div class="splash-ripple --r1" aria-hidden="true"></div>
+          <div class="splash-ripple --r2" aria-hidden="true"></div>
+          <div id="splash-logo">
+            <span>RT</span>
+          </div>
+        </div>
+        <div class="splash-tagline" id="splash-tagline" aria-label="Train Hard">
+          <!-- letters injected by JS -->
+        </div>
       </div>
 
-      <!-- Progress Bar Container -->
-      <div style="width: 200px; height: 2px; background: #27272a; border-radius: 999px; overflow: hidden; position: relative;">
-        <div id="splash-bar" style="
-          height: 100%;
-          width: 0%;
-          border-radius: 999px;
-          background: linear-gradient(90deg, #ef4444, #f97316);
-          transition: width 0.1s ease-out;
-        "></div>
+      <!-- Bottom: progress bar + meta -->
+      <div class="splash-bottom">
+        <div class="splash-bar-wrap">
+          <div id="splash-bar"></div>
+          <div class="splash-bar-shimmer" aria-hidden="true"></div>
+        </div>
+        <div class="splash-meta">
+          <span>SYS·READY</span>
+          <span id="splash-pct">000</span>
+        </div>
       </div>
+
+      <!-- Bottom scan line + version -->
+      <div class="splash-scan --bottom" aria-hidden="true"></div>
+      <div class="splash-version">V·1 · INITIALIZING</div>
     </div>
 
     <div id="root"></div>
@@ -64,48 +369,321 @@
 
     <script>
       (function() {
-        var splash = document.getElementById('splash');
-        var logo = document.getElementById('splash-logo');
-        var bar = document.getElementById('splash-bar');
-        var progress = 0;
+        // ============================================================
+        // SOUND ENGINE — Web Audio API, all synthesized live.
+        // Fails silently if the browser blocks autoplay (common on iOS
+        // Safari without user gesture). Visual splash always works.
+        // ============================================================
+        var AudioCtx = window.AudioContext || window.webkitAudioContext;
+        var ctx = null;
+        var masterGain = null;
+        var droneNodes = null; // { osc, gain } so we can stop them later
 
-        // Animate logo in
-        setTimeout(function() {
-          logo.style.opacity = '1';
-          logo.style.transform = 'scale(1)';
-        }, 80);
-
-        // Animate progress bar
-        var interval = setInterval(function() {
-          progress += Math.random() * 4 + 1;
-          if (progress >= 100) {
-            progress = 100;
-            clearInterval(interval);
-            bar.style.width = '100%';
-            logo.style.boxShadow = '0 0 50px rgba(239, 68, 68, 0.35)';
-            // Fade out and remove splash
-            setTimeout(function() {
-              splash.style.opacity = '0';
-              splash.style.transform = 'scale(1.03)';
-              setTimeout(function() {
-                splash.style.display = 'none';
-              }, 600);
-            }, 300);
-          } else {
-            bar.style.width = progress + '%';
-            // Dynamic glow on logo
-            if (progress > 50) {
-              var glow = (progress - 50) / 50;
-              logo.style.boxShadow = '0 0 ' + (glow * 40) + 'px rgba(239, 68, 68, ' + (glow * 0.3) + ')';
-            }
+        try {
+          if (AudioCtx) {
+            ctx = new AudioCtx();
+            masterGain = ctx.createGain();
+            masterGain.gain.value = 0.55; // overall volume
+            masterGain.connect(ctx.destination);
           }
-        }, 30);
+        } catch (e) { ctx = null; }
+
+        function safe(fn) { try { fn(); } catch (e) { /* ignore */ } }
+        function now() { return ctx ? ctx.currentTime : 0; }
+
+        // Schedule a function relative to splash start (in ms)
+        var splashStart = performance.now();
+        function at(ms, fn) {
+          var delay = Math.max(0, ms - (performance.now() - splashStart));
+          setTimeout(fn, delay);
+        }
+
+        // --- Sub-bass thump (low whomp) ------------------------------
+        function subBassThump() {
+          if (!ctx) return;
+          safe(function() {
+            var t0 = now();
+            var osc = ctx.createOscillator();
+            var gain = ctx.createGain();
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(120, t0);
+            osc.frequency.exponentialRampToValueAtTime(45, t0 + 0.18);
+            gain.gain.setValueAtTime(0, t0);
+            gain.gain.linearRampToValueAtTime(0.7, t0 + 0.01);
+            gain.gain.exponentialRampToValueAtTime(0.001, t0 + 0.25);
+            osc.connect(gain).connect(masterGain);
+            osc.start(t0);
+            osc.stop(t0 + 0.3);
+          });
+        }
+
+        // --- Whoosh sweep (filter sweep through noise) ---------------
+        function whoosh(durSec, fromHz, toHz, vol) {
+          if (!ctx) return;
+          safe(function() {
+            var t0 = now();
+            var bufferSize = Math.floor(ctx.sampleRate * durSec);
+            var buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+            var data = buffer.getChannelData(0);
+            for (var i = 0; i < bufferSize; i++) {
+              data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
+            }
+            var src = ctx.createBufferSource();
+            src.buffer = buffer;
+            var filter = ctx.createBiquadFilter();
+            filter.type = "bandpass";
+            filter.frequency.setValueAtTime(fromHz, t0);
+            filter.frequency.exponentialRampToValueAtTime(toHz, t0 + durSec);
+            filter.Q.value = 6;
+            var gain = ctx.createGain();
+            gain.gain.setValueAtTime(vol || 0.25, t0);
+            gain.gain.exponentialRampToValueAtTime(0.001, t0 + durSec);
+            src.connect(filter).connect(gain).connect(masterGain);
+            src.start(t0);
+            src.stop(t0 + durSec + 0.05);
+          });
+        }
+
+        // --- STAMP (logo impact: kick burst + bright click) ----------
+        function stamp() {
+          if (!ctx) return;
+          safe(function() {
+            var t0 = now();
+            // kick body
+            var osc = ctx.createOscillator();
+            var oscGain = ctx.createGain();
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(180, t0);
+            osc.frequency.exponentialRampToValueAtTime(50, t0 + 0.1);
+            oscGain.gain.setValueAtTime(0, t0);
+            oscGain.gain.linearRampToValueAtTime(0.85, t0 + 0.005);
+            oscGain.gain.exponentialRampToValueAtTime(0.001, t0 + 0.18);
+            osc.connect(oscGain).connect(masterGain);
+            osc.start(t0);
+            osc.stop(t0 + 0.2);
+
+            // bright click on top
+            var bufferSize = Math.floor(ctx.sampleRate * 0.05);
+            var buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+            var data = buffer.getChannelData(0);
+            for (var i = 0; i < bufferSize; i++) {
+              data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufferSize, 4);
+            }
+            var src = ctx.createBufferSource();
+            src.buffer = buffer;
+            var hp = ctx.createBiquadFilter();
+            hp.type = "highpass";
+            hp.frequency.value = 4000;
+            var clickGain = ctx.createGain();
+            clickGain.gain.setValueAtTime(0.4, t0);
+            clickGain.gain.exponentialRampToValueAtTime(0.001, t0 + 0.06);
+            src.connect(hp).connect(clickGain).connect(masterGain);
+            src.start(t0);
+            src.stop(t0 + 0.07);
+          });
+        }
+
+        // --- Swell (ripple wash, soft low sine envelope) -------------
+        function swell() {
+          if (!ctx) return;
+          safe(function() {
+            var t0 = now();
+            var osc = ctx.createOscillator();
+            var gain = ctx.createGain();
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(220, t0);
+            osc.frequency.linearRampToValueAtTime(330, t0 + 0.6);
+            gain.gain.setValueAtTime(0, t0);
+            gain.gain.linearRampToValueAtTime(0.12, t0 + 0.12);
+            gain.gain.linearRampToValueAtTime(0, t0 + 0.6);
+            osc.connect(gain).connect(masterGain);
+            osc.start(t0);
+            osc.stop(t0 + 0.65);
+          });
+        }
+
+        // --- Tick (typewriter, very short) ---------------------------
+        function tick() {
+          if (!ctx) return;
+          safe(function() {
+            var t0 = now();
+            var bufferSize = Math.floor(ctx.sampleRate * 0.04);
+            var buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+            var data = buffer.getChannelData(0);
+            for (var i = 0; i < bufferSize; i++) {
+              data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufferSize, 6);
+            }
+            var src = ctx.createBufferSource();
+            src.buffer = buffer;
+            var hp = ctx.createBiquadFilter();
+            hp.type = "highpass";
+            hp.frequency.value = 6000;
+            var gain = ctx.createGain();
+            gain.gain.value = 0.18;
+            src.connect(hp).connect(gain).connect(masterGain);
+            src.start(t0);
+            src.stop(t0 + 0.05);
+          });
+        }
+
+        // --- Drone (soft low rumble during loading bar) --------------
+        function startDrone() {
+          if (!ctx || droneNodes) return;
+          safe(function() {
+            var osc1 = ctx.createOscillator();
+            var osc2 = ctx.createOscillator();
+            var gain = ctx.createGain();
+            osc1.type = "sine";
+            osc2.type = "sine";
+            osc1.frequency.value = 55;
+            osc2.frequency.value = 82.5; // perfect fifth
+            gain.gain.setValueAtTime(0, now());
+            gain.gain.linearRampToValueAtTime(0.07, now() + 0.4);
+            osc1.connect(gain);
+            osc2.connect(gain);
+            gain.connect(masterGain);
+            osc1.start();
+            osc2.start();
+            droneNodes = { osc1: osc1, osc2: osc2, gain: gain };
+          });
+        }
+        function stopDrone() {
+          if (!droneNodes) return;
+          safe(function() {
+            var t0 = now();
+            droneNodes.gain.gain.cancelScheduledValues(t0);
+            droneNodes.gain.gain.setValueAtTime(droneNodes.gain.gain.value, t0);
+            droneNodes.gain.gain.exponentialRampToValueAtTime(0.001, t0 + 0.5);
+            droneNodes.osc1.stop(t0 + 0.55);
+            droneNodes.osc2.stop(t0 + 0.55);
+          });
+          droneNodes = null;
+        }
+
+        // --- Final ding (digital chime: 2 sine harmonics) ------------
+        function finalDing() {
+          if (!ctx) return;
+          safe(function() {
+            var t0 = now();
+            var freqs = [880, 1320]; // A5 + E6, perfect fifth chord
+            freqs.forEach(function(f, idx) {
+              var osc = ctx.createOscillator();
+              var gain = ctx.createGain();
+              osc.type = "triangle";
+              osc.frequency.value = f;
+              gain.gain.setValueAtTime(0, t0);
+              gain.gain.linearRampToValueAtTime(0.25 - idx * 0.08, t0 + 0.01);
+              gain.gain.exponentialRampToValueAtTime(0.001, t0 + 1.2);
+              osc.connect(gain).connect(masterGain);
+              osc.start(t0);
+              osc.stop(t0 + 1.3);
+            });
+          });
+        }
+
+        // ============================================================
+        // SCHEDULE — sync with the visual animation
+        // ============================================================
+        // iOS Safari often suspends AudioContext until a user gesture.
+        // We try to resume on load, and also on any first interaction.
+        function tryResume() {
+          if (ctx && ctx.state === "suspended") {
+            ctx.resume().catch(function(){});
+          }
+        }
+        tryResume();
+        ["pointerdown", "touchstart", "keydown"].forEach(function(ev) {
+          window.addEventListener(ev, tryResume, { once: true, passive: true });
+        });
+
+        at(50, function() { subBassThump(); });            // top scan line
+        at(150, function() { whoosh(0.25, 4000, 200, 0.22); }); // bottom scan line
+        at(450, function() { stamp(); });                   // logo impact
+        at(600, function() { swell(); });                   // ripple 1
+        at(800, function() { swell(); });                   // ripple 2
+
+        // Typewriter ticks: align with letter delays in the tagline DOM
+        var startTyping = 900;
+        var perChar = 65;
+        var text = "TRAIN  HARD";
+        for (var ci = 0; ci < text.length; ci++) {
+          if (text.charAt(ci) !== " ") {
+            (function(ms) { at(ms, function() { tick(); }); })(startTyping + ci * perChar);
+          }
+        }
+
+        at(1400, function() { startDrone(); });             // ambient rumble
+        at(2700, function() { stopDrone(); });              // taper before ding
+        at(2900, function() { finalDing(); });              // 100% reached
+
+        // ============================================================
+        // VISUAL — same as before (dust, tagline, breathing, progress)
+        // ============================================================
+
+        // Floating dust particles
+        var dust = document.getElementById("splash-dust");
+        var w = window.innerWidth;
+        for (var i = 0; i < 18; i++) {
+          var s = document.createElement("span");
+          s.style.left = (Math.random() * w) + "px";
+          s.style.top = (100 + Math.random() * 100) + "vh";
+          s.style.animationDuration = (8 + Math.random() * 12) + "s";
+          s.style.animationDelay = (Math.random() * 6) + "s";
+          s.style.opacity = (0.2 + Math.random() * 0.5).toFixed(2);
+          dust.appendChild(s);
+        }
+
+        // Typed tagline
+        var taglineEl = document.getElementById("splash-tagline");
+        for (var c = 0; c < text.length; c++) {
+          var letter = document.createElement("span");
+          letter.textContent = text.charAt(c) === " " ? "\u00A0" : text.charAt(c);
+          letter.style.animationDelay = (startTyping + c * perChar) + "ms";
+          taglineEl.appendChild(letter);
+        }
+        var cursor = document.createElement("span");
+        cursor.className = "splash-cursor";
+        taglineEl.appendChild(cursor);
+        setTimeout(function() { cursor.classList.add("--on"); }, startTyping + text.length * perChar + 100);
+
+        // Logo enters breathing mode after stamp settles
+        setTimeout(function() {
+          document.getElementById("splash-stage").classList.add("--breathing");
+        }, 1300);
+
+        // Progress bar (~3s total splash)
+        var bar = document.getElementById("splash-bar");
+        var pct = document.getElementById("splash-pct");
+        var splash = document.getElementById("splash");
+        var totalMs = 3000;
+        var startedAt = performance.now();
+
+        function tickFrame(now2) {
+          var elapsed = now2 - startedAt;
+          var p = Math.min(elapsed / totalMs, 1);
+          var eased = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+          var v = Math.floor(eased * 100);
+          bar.style.width = v + "%";
+          pct.textContent = v < 10 ? "00" + v : v < 100 ? "0" + v : "100";
+
+          if (p < 1) {
+            requestAnimationFrame(tickFrame);
+          } else {
+            bar.style.width = "100%";
+            pct.textContent = "100";
+            setTimeout(function() {
+              splash.classList.add("--leaving");
+              setTimeout(function() {
+                splash.style.display = "none";
+                // Tear down audio context to free resources
+                if (ctx) safe(function() { ctx.close(); });
+              }, 700);
+            }, 220);
+          }
+        }
+        requestAnimationFrame(tickFrame);
       })();
     </script>
-    <script
-      defer
-      src="%VITE_ANALYTICS_ENDPOINT%/umami"
-      data-website-id="%VITE_ANALYTICS_WEBSITE_ID%"></script>
   </body>
 
 </html>

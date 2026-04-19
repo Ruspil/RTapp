@@ -5,9 +5,11 @@ import "./index.css"
 import App from "./App.tsx"
 import { ThemeProvider } from "@/components/theme-provider.tsx"
 
+document.documentElement.classList.add("nike")
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ThemeProvider>
+    <ThemeProvider defaultTheme="dark">
       <App />
     </ThemeProvider>
   </StrictMode>

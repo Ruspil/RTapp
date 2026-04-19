@@ -18,7 +18,7 @@ export function useAIChat({ context }: UseAIChatOptions = {}) {
       id: "welcome",
       role: "assistant",
       content:
-        "Salut! Je suis ton coach IA. Pose-moi une question sur l’entraînement — le modèle tourne côté serveur (clé API non exposée au navigateur).",
+        "Hey. I'm your AI Coach. Ask me anything about training — form, recovery, nutrition, programming. The model runs server-side (your API key stays private).",
       timestamp: Date.now(),
     },
   ])
@@ -90,7 +90,7 @@ export function useAIChat({ context }: UseAIChatOptions = {}) {
         id: "welcome",
         role: "assistant",
         content:
-          "Salut! Je suis ton coach IA. Pose-moi une question sur l’entraînement — le modèle tourne côté serveur (clé API non exposée au navigateur).",
+          "Hey. I'm your AI Coach. Ask me anything about training — form, recovery, nutrition, programming. The model runs server-side (your API key stays private).",
         timestamp: Date.now(),
       },
     ])
